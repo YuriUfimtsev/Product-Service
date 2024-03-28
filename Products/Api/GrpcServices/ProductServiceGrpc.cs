@@ -1,5 +1,4 @@
 using Application;
-using DataAccess.Models;
 using Domain.Models;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;

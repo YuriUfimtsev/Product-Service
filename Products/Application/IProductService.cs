@@ -1,5 +1,4 @@
-﻿using DataAccess.Models;
-using Domain.Models;
+﻿using Domain.Models;
 
 namespace Application;
 

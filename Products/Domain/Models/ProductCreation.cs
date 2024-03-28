@@ -1,6 +1,4 @@
-using Domain.Models;
-
-namespace DataAccess.Models;
+namespace Domain.Models;
 
 public record ProductCreation
 {
@@ -13,5 +11,4 @@ public record ProductCreation
     public ProductType Type { get; init; }
     
     public int WarehouseId { get; init; }
-
 }

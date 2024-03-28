@@ -1,4 +1,3 @@
-using DataAccess.Models;
 using Domain.Models;
 
 namespace Domain;
