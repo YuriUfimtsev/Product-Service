@@ -1,24 +1,16 @@
+image: mcr.microsoft.com/dotnet/sdk:latest
+
 stages:
   - build
   - test
 
-variables:
-  SOLUTIONS: $(find . -type f -name "*.sln")
-
-build_job:
+build:
   stage: build
-  image: mcr.microsoft.com/dotnet/sdk:8-focal
   script:
-    - |
-      for sln in $SOLUTIONS; do
-        dotnet build $sln
-      done
+    - dotnet restore
+    - dotnet build
 
-test_job:
+test:
   stage: test
-  image: mcr.microsoft.com/dotnet/sdk:8-focal
   script:
-    - |
-      for sln in $SOLUTIONS; do
-        dotnet test $sln
-      done
+    - dotnet test
