@@ -1,0 +1,24 @@
+stages:
+  - build
+  - test
+
+variables:
+  SOLUTIONS: $(find . -type f -name "*.sln")
+
+build_job:
+  stage: build
+  image: mcr.microsoft.com/dotnet/sdk:8-focal
+  script:
+    - |
+      for sln in $SOLUTIONS; do
+        dotnet build $sln
+      done
+
+test_job:
+  stage: test
+  image: mcr.microsoft.com/dotnet/sdk:8-focal
+  script:
+    - |
+      for sln in $SOLUTIONS; do
+        dotnet test $sln
+      done
