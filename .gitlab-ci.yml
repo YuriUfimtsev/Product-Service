@@ -16,4 +16,4 @@ build:
 test:
   stage: test
   script:
-    - dotnet test $SOLUTIONS
+    - for sln in $SOLUTIONS; do dotnet test $sln; done
