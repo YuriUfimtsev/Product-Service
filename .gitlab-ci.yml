@@ -1,5 +1,8 @@
 image: mcr.microsoft.com/dotnet/sdk:latest
 
+variables:
+  SOLUTIONS: $(find . -type f -name "*.sln" | tr '\n' ' ')
+
 stages:
   - build
   - test
@@ -7,10 +10,10 @@ stages:
 build:
   stage: build
   script:
-    - dotnet restore
-    - dotnet build
+    - dotnet restore $SOLUTIONS
+    - dotnet build $SOLUTIONS
 
 test:
   stage: test
   script:
-    - dotnet test
+    - dotnet test $SOLUTIONS
