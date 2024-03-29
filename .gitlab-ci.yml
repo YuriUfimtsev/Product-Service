@@ -1,11 +1,11 @@
 image: mcr.microsoft.com/dotnet/sdk:latest
 
-variables:
-  SOLUTIONS: $(find . -type f -name "*.sln" | tr '\n' ' ')
-
 stages:
   - build
   - test
+
+before_script:
+  - export SOLUTIONS=$(find . -type f -name "*.sln" | tr '\n' ' ')
 
 build:
   stage: build
