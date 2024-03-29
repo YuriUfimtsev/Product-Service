@@ -10,8 +10,8 @@ stages:
 build:
   stage: build
   script:
-    - dotnet restore $SOLUTIONS
-    - dotnet build $SOLUTIONS
+    - for sln in $SOLUTIONS; do dotnet restore $sln; done
+    - for sln in $SOLUTIONS; do dotnet build $sln; done
 
 test:
   stage: test
