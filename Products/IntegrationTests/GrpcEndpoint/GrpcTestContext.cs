@@ -2,7 +2,7 @@ using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.GrpcClient
+namespace IntegrationTests.GrpcEndpoint
 {
     internal class GrpcTestContext<TStartup> : IDisposable where TStartup : class
     {

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
 
-namespace IntegrationTests.GrpcClient;
+namespace IntegrationTests.GrpcEndpoint;
 
 internal class ForwardingLoggerProvider : ILoggerProvider
 {

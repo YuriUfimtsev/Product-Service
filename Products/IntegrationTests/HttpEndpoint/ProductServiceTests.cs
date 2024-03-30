@@ -5,18 +5,19 @@ using Api;
 using Domain.Models;
 using FluentAssertions;
 using UnitTests.Builders;
+using static IntegrationTests.Converters;
 
-namespace IntegrationTests.HttpClient;
+namespace IntegrationTests.HttpEndpoint;
 
-public class ProductServiceTests : IClassFixture<MyWebApplicationFactory<IntegrationTestsHelper>>
+public class ProductServiceTests : IClassFixture<MyWebApplicationFactory<Startup>>
 {
-    private readonly MyWebApplicationFactory<IntegrationTestsHelper> _webApplicationFactory;
+    private readonly MyWebApplicationFactory<Startup> _webApplicationFactory;
     private readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
     
-    public ProductServiceTests(MyWebApplicationFactory<IntegrationTestsHelper> webApplicationFactory)
+    public ProductServiceTests(MyWebApplicationFactory<Startup> webApplicationFactory)
     {
         _webApplicationFactory = webApplicationFactory;
     }
@@ -122,29 +123,5 @@ public class ProductServiceTests : IClassFixture<MyWebApplicationFactory<Integra
         var responseContent = await response.Content.ReadAsStringAsync();
         var actualPage = ListProductsResponse.Parser.ParseJson(responseContent).Products;
         actualPage.Should().HaveCount(expectedPage.Count);
-    }
-
-    private static ListProductsRequest.Types.Pagination ConvertPaginationModelToPaginationRequestModel(Pagination pagination)
-    {
-        return new ListProductsRequest.Types.Pagination
-        {
-            PageNumber = pagination.PageNumber,
-            PageSize = pagination.PageSize
-        };
-    }
-    
-    private static ListProductsRequest.Types.Filter ConvertFilterModelToFilterRequestModel(Filter filter)
-    {
-        return new ListProductsRequest.Types.Filter
-        {
-            ProductType = (Api.ProductType)filter.ProductType,
-            StartDate = new Date
-            {
-                Day = filter.StartDate.Day,
-                Month = filter.StartDate.Month,
-                Year = filter.StartDate.Year
-            },
-            WarehouseId = filter.WarehouseId
-        };
     }
 }

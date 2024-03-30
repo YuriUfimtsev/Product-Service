@@ -1,11 +1,14 @@
+using Domain;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Moq;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.GrpcClient;
+namespace IntegrationTests.GrpcEndpoint;
 
 public delegate void LogMessage(LogLevel logLevel, string categoryName, EventId eventId, string message, Exception? exception);
 
@@ -17,6 +20,8 @@ public class GrpcTestFixture<TStartup> : IDisposable where TStartup : class
     private Action<IWebHostBuilder>? _configureWebHost;
 
     public event LogMessage? LoggedMessage;
+    
+    public Mock<IProductRepository> ProductRepositoryFake { get; } = new();
 
     public GrpcTestFixture()
     {
@@ -37,10 +42,6 @@ public class GrpcTestFixture<TStartup> : IDisposable where TStartup : class
         if (_host == null)
         {
             var builder = new HostBuilder()
-                .ConfigureServices(services =>
-                {
-                    services.AddSingleton<ILoggerFactory>(LoggerFactory);
-                })
                 .ConfigureWebHostDefaults(webHost =>
                 {
                     webHost
@@ -48,6 +49,11 @@ public class GrpcTestFixture<TStartup> : IDisposable where TStartup : class
                         .UseStartup<TStartup>();
 
                     _configureWebHost?.Invoke(webHost);
+                })
+                .ConfigureServices(services =>
+                {
+                    services.Replace(new ServiceDescriptor(typeof(IProductRepository), ProductRepositoryFake.Object));
+                    services.AddSingleton<ILoggerFactory>(LoggerFactory);
                 });
             _host = builder.Start();
             _server = _host.GetTestServer();

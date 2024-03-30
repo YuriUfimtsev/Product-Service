@@ -3,14 +3,14 @@ using Grpc.Net.Client;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.GrpcClient;
+namespace IntegrationTests.GrpcEndpoint;
 
-public class IntegrationTestBase : IClassFixture<GrpcTestFixture<IntegrationTestsHelper>>, IDisposable
+public class IntegrationTestBase : IClassFixture<GrpcTestFixture<Startup>>, IDisposable
 {
     private GrpcChannel? _channel;
     private IDisposable? _testContext;
 
-    protected GrpcTestFixture<IntegrationTestsHelper> Fixture { get; set; }
+    protected GrpcTestFixture<Startup> Fixture { get; set; }
 
     protected ILoggerFactory LoggerFactory => Fixture.LoggerFactory;
 
@@ -25,7 +25,7 @@ public class IntegrationTestBase : IClassFixture<GrpcTestFixture<IntegrationTest
         });
     }
 
-    public IntegrationTestBase(GrpcTestFixture<IntegrationTestsHelper> fixture, ITestOutputHelper outputHelper)
+    public IntegrationTestBase(GrpcTestFixture<Startup> fixture, ITestOutputHelper outputHelper)
     {
         Fixture = fixture;
         _testContext = Fixture.GetTestContext(outputHelper);
