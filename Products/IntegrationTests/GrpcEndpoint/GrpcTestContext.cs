@@ -15,7 +15,6 @@ namespace IntegrationTests.GrpcEndpoint
             _stopwatch = Stopwatch.StartNew();
             _fixture = fixture;
             _outputHelper = outputHelper;
-            _fixture.LoggedMessage += WriteMessage;
         }
 
         private void WriteMessage(LogLevel logLevel, string category, EventId eventId, string message, Exception? exception)
@@ -30,7 +29,6 @@ namespace IntegrationTests.GrpcEndpoint
 
         public void Dispose()
         {
-            _fixture.LoggedMessage -= WriteMessage;
         }
     }
 }

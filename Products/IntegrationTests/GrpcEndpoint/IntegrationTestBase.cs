@@ -11,16 +11,13 @@ public class IntegrationTestBase : IClassFixture<GrpcTestFixture<Startup>>, IDis
     private IDisposable? _testContext;
 
     protected GrpcTestFixture<Startup> Fixture { get; set; }
-
-    protected ILoggerFactory LoggerFactory => Fixture.LoggerFactory;
-
+    
     protected GrpcChannel Channel => _channel ??= CreateChannel();
 
     protected GrpcChannel CreateChannel()
     {
         return GrpcChannel.ForAddress("http://localhost", new GrpcChannelOptions
         {
-            LoggerFactory = LoggerFactory,
             HttpHandler = Fixture.Handler
         });
     }

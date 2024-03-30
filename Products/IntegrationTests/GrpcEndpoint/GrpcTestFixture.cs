@@ -10,27 +10,18 @@ using Xunit.Abstractions;
 
 namespace IntegrationTests.GrpcEndpoint;
 
-public delegate void LogMessage(LogLevel logLevel, string categoryName, EventId eventId, string message, Exception? exception);
-
 public class GrpcTestFixture<TStartup> : IDisposable where TStartup : class
 {
     private TestServer? _server;
     private IHost? _host;
     private HttpMessageHandler? _handler;
     private Action<IWebHostBuilder>? _configureWebHost;
-
-    public event LogMessage? LoggedMessage;
     
-    public Mock<IProductRepository> ProductRepositoryFake { get; } = new();
-
     public GrpcTestFixture()
     {
-        LoggerFactory = new LoggerFactory();
-        LoggerFactory.AddProvider(new ForwardingLoggerProvider((logLevel, category, eventId, message, exception) =>
-        {
-            LoggedMessage?.Invoke(logLevel, category, eventId, message, exception);
-        }));
     }
+
+    public Mock<IProductRepository> ProductRepositoryFake { get; } = new();
 
     public void ConfigureWebHost(Action<IWebHostBuilder> configure)
     {
@@ -53,16 +44,13 @@ public class GrpcTestFixture<TStartup> : IDisposable where TStartup : class
                 .ConfigureServices(services =>
                 {
                     services.Replace(new ServiceDescriptor(typeof(IProductRepository), ProductRepositoryFake.Object));
-                    services.AddSingleton<ILoggerFactory>(LoggerFactory);
                 });
             _host = builder.Start();
             _server = _host.GetTestServer();
             _handler = _server.CreateHandler();
         }
     }
-
-    public LoggerFactory LoggerFactory { get; }
-
+    
     public HttpMessageHandler Handler
     {
         get
