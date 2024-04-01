@@ -16,25 +16,25 @@ public class ProductCreationBuilder
         _name = name;
         return this;
     }
-    
+
     public ProductCreationBuilder WithPrice(int price)
     {
         _price = price;
         return this;
     }
-    
+
     public ProductCreationBuilder WithWeight(int weight)
     {
         _weight = weight;
         return this;
     }
-    
+
     public ProductCreationBuilder WithType(ProductType type)
     {
         _type = type;
         return this;
     }
-    
+
     public ProductCreationBuilder WithWarehouseId(int warehouseId)
     {
         _warehouseId = warehouseId;
@@ -50,7 +50,7 @@ public class ProductCreationBuilder
             Price = _price ?? faker.Random.Int(0),
             Weight = _weight ?? faker.Random.Int(0),
             Type = _type ?? ProductType.General,
-            WarehouseId = _warehouseId ?? faker.Random.Int(0)
+            WarehouseId = _warehouseId ?? faker.Random.Int(1)
         };
     }
 }
