@@ -37,7 +37,7 @@ public class ProductServiceTests
     public void Get_ExistingProduct_ShouldReturnProduct()
     {
         var existingProductId = 1;
-        var expectedProduct = new ProductBuilder().Build();
+        var expectedProduct = new ProductBuilder().WithId(existingProductId).Build();
 
         _productRepositoryFake
             .Setup(fake => fake.Get(existingProductId))
@@ -95,7 +95,7 @@ public class ProductServiceTests
 
         Assert.Contains(firstExpectedProduct, actualList);
         Assert.Contains(secondExpectedProduct, actualList);
-        Assert.Equal(2, actualList.Count);
+        Assert.Equal(expectedList.Count, actualList.Count);
         _productRepositoryFake
             .Verify(fake => fake.List(paginationContext, filter), Times.Once);
     }

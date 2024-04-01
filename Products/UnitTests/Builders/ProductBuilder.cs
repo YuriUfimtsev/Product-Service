@@ -61,7 +61,7 @@ public class ProductBuilder
         var productCreation = new ProductCreationBuilder().Build();
         return new Product
         {
-            Id = _id ?? faker.Random.Int(1),
+            Id = _id ?? faker.Random.Int(0),
             CreationDate = _creationDate ?? DateTime.Now,
             Name = _name ?? productCreation.Name,
             Price = _price ?? productCreation.Price,

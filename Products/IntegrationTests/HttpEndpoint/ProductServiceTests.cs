@@ -32,7 +32,7 @@ public class ProductServiceTests : IClassFixture<MyWebApplicationFactory<Startup
 
         _webApplicationFactory.ProductRepositoryFake
             .Setup(fake => fake.Create(productCreation))
-            .Returns(0);
+            .Returns(expectedId);
 
         var response = await client.PostAsJsonAsync(
             "/product/create", productCreation, _jsonSerializerOptions);
@@ -103,9 +103,9 @@ public class ProductServiceTests : IClassFixture<MyWebApplicationFactory<Startup
         };
         var expectedPage = new List<Domain.Models.Product>
         {
-            new ProductBuilder().WithId(0).WithType(Domain.Models.ProductType.General).Build(),
-            new ProductBuilder().WithId(1).WithType(Domain.Models.ProductType.General).Build(),
-            new ProductBuilder().WithId(2).WithType(Domain.Models.ProductType.General).Build()
+            new ProductBuilder().WithId(0).WithType(Domain.Models.ProductType.General).WithWarehouseId(1).Build(),
+            new ProductBuilder().WithId(1).WithType(Domain.Models.ProductType.General).WithWarehouseId(1).Build(),
+            new ProductBuilder().WithId(2).WithType(Domain.Models.ProductType.General).WithWarehouseId(1).Build()
         };
         var requestModel = new ListProductsRequest
         {

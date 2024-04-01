@@ -103,9 +103,9 @@ public class ProductServiceTests : IntegrationTestBase
         };
         var expectedPage = new List<Domain.Models.Product>
         {
-            new ProductBuilder().WithId(0).WithType(Domain.Models.ProductType.General).Build(),
-            new ProductBuilder().WithId(1).WithType(Domain.Models.ProductType.General).Build(),
-            new ProductBuilder().WithId(2).WithType(Domain.Models.ProductType.General).Build()
+            new ProductBuilder().WithId(0).WithType(Domain.Models.ProductType.General).WithWarehouseId(1).Build(),
+            new ProductBuilder().WithId(1).WithType(Domain.Models.ProductType.General).WithWarehouseId(1).Build(),
+            new ProductBuilder().WithId(2).WithType(Domain.Models.ProductType.General).WithWarehouseId(1).Build()
         };
         var listProductsRequest = new ListProductsRequest
         {

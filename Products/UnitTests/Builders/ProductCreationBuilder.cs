@@ -50,7 +50,7 @@ public class ProductCreationBuilder
             Price = _price ?? faker.Random.Int(0),
             Weight = _weight ?? faker.Random.Int(0),
             Type = _type ?? ProductType.General,
-            WarehouseId = _warehouseId ?? faker.Random.Int(1)
+            WarehouseId = _warehouseId ?? faker.Random.Int(0)
         };
     }
 }
