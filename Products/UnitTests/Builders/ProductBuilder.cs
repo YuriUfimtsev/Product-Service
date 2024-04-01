@@ -18,37 +18,37 @@ public class ProductBuilder
         _id = id;
         return this;
     }
-    
+
     public ProductBuilder WithCreationDate(DateTime creationDate)
     {
         _creationDate = creationDate;
         return this;
     }
-    
+
     public ProductBuilder WithName(string name)
     {
         _name = name;
         return this;
     }
-    
+
     public ProductBuilder WithPrice(int price)
     {
         _price = price;
         return this;
     }
-    
+
     public ProductBuilder WithWeight(int weight)
     {
         _weight = weight;
         return this;
     }
-    
+
     public ProductBuilder WithType(ProductType type)
     {
         _type = type;
         return this;
     }
-    
+
     public ProductBuilder WithWarehouseId(int warehouseId)
     {
         _warehouseId = warehouseId;
@@ -61,7 +61,7 @@ public class ProductBuilder
         var productCreation = new ProductCreationBuilder().Build();
         return new Product
         {
-            Id = _id ?? faker.Random.Int(0),
+            Id = _id ?? faker.Random.Int(1),
             CreationDate = _creationDate ?? DateTime.Now,
             Name = _name ?? productCreation.Name,
             Price = _price ?? productCreation.Price,

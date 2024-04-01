@@ -16,20 +16,20 @@ public class ProductServiceTests : IClassFixture<MyWebApplicationFactory<Startup
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
-    
+
     public ProductServiceTests(MyWebApplicationFactory<Startup> webApplicationFactory)
     {
         _webApplicationFactory = webApplicationFactory;
     }
-    
+
     [Fact]
     public async Task Create_NewProductCreation_ShouldReturnProductId()
     {
         var client = _webApplicationFactory.CreateClient();
-        
+
         var productCreation = new ProductCreationBuilder().Build();
-        var expectedId = 0;
-        
+        var expectedId = 1;
+
         _webApplicationFactory.ProductRepositoryFake
             .Setup(fake => fake.Create(productCreation))
             .Returns(0);
@@ -47,10 +47,10 @@ public class ProductServiceTests : IClassFixture<MyWebApplicationFactory<Startup
     public async Task Get_ExistingProduct_ShouldReturnProduct()
     {
         var client = _webApplicationFactory.CreateClient();
-        
-        var productId = 0;
+
+        var productId = 1;
         var expectedProduct = new ProductBuilder().WithId(productId).Build();
-        
+
         _webApplicationFactory.ProductRepositoryFake
             .Setup(fake => fake.Get(productId))
             .Returns(expectedProduct);
@@ -62,16 +62,16 @@ public class ProductServiceTests : IClassFixture<MyWebApplicationFactory<Startup
         var actualProduct = GetProductResponse.Parser.ParseJson(responseContent).Product;
         actualProduct.ProductId.Should().Be(expectedProduct.Id);
     }
-    
+
     [Fact]
     public async Task UpdatePrice_OfExistingProduct_ShouldReturnOldPrice()
     {
         var client = _webApplicationFactory.CreateClient();
-        
-        var productId = 0;
+
+        var productId = 1;
         var newPrice = 100;
         var expectedOldPrice = 10;
-        
+
         _webApplicationFactory.ProductRepositoryFake
             .Setup(fake => fake.UpdatePrice(productId, newPrice))
             .Returns(expectedOldPrice);
@@ -89,7 +89,7 @@ public class ProductServiceTests : IClassFixture<MyWebApplicationFactory<Startup
     public async Task List_FromRepositoryWithThreeProductsWithCorrespondingFilterAndPagination_ShouldReturnThreeProducts()
     {
         var client = _webApplicationFactory.CreateClient();
-        
+
         var paginationContext = new Pagination
         {
             PageNumber = 0,
@@ -99,10 +99,10 @@ public class ProductServiceTests : IClassFixture<MyWebApplicationFactory<Startup
         {
             ProductType = Domain.Models.ProductType.General,
             StartDate = DateTime.MinValue,
-            WarehouseId = 0
+            WarehouseId = 1
         };
-        var expectedPage = new List<Domain.Models.Product> 
-        { 
+        var expectedPage = new List<Domain.Models.Product>
+        {
             new ProductBuilder().WithId(0).WithType(Domain.Models.ProductType.General).Build(),
             new ProductBuilder().WithId(1).WithType(Domain.Models.ProductType.General).Build(),
             new ProductBuilder().WithId(2).WithType(Domain.Models.ProductType.General).Build()
@@ -112,13 +112,13 @@ public class ProductServiceTests : IClassFixture<MyWebApplicationFactory<Startup
             Filter = ConvertFilterModelToFilterRequestModel(filter),
             Pagination = ConvertPaginationModelToPaginationRequestModel(paginationContext)
         };
-        
+
         _webApplicationFactory.ProductRepositoryFake
             .Setup(fake => fake.List(paginationContext, filter))
             .Returns(expectedPage);
-        
+
         var response = await client.PostAsJsonAsync("/product/list", requestModel, _jsonSerializerOptions);
-        
+
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var responseContent = await response.Content.ReadAsStringAsync();
         var actualPage = ListProductsResponse.Parser.ParseJson(responseContent).Products;

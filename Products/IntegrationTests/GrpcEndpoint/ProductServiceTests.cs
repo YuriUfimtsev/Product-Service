@@ -30,8 +30,8 @@ public class ProductServiceTests : IntegrationTestBase
             WarehouseId = productCreation.WarehouseId,
             Weight = productCreation.Weight
         };
-        var expectedId = 0;
-        
+        var expectedId = 1;
+
         Fixture.ProductRepositoryFake
             .Setup(fake => fake.Create(productCreation))
             .Returns(expectedId);
@@ -40,19 +40,19 @@ public class ProductServiceTests : IntegrationTestBase
 
         response.ProductId.Should().Be(expectedId);
     }
-    
+
     [Fact]
     public async Task Get_ExistingProduct_ShouldReturnProduct()
     {
         var client = new ProductService.ProductServiceClient(Channel);
-        
-        var productId = 0;
+
+        var productId = 1;
         var expectedProduct = new ProductBuilder().WithId(productId).Build();
         var getProductRequest = new GetProductRequest
         {
             ProductId = productId
         };
-        
+
         Fixture.ProductRepositoryFake
             .Setup(fake => fake.Get(productId))
             .Returns(expectedProduct);
@@ -61,13 +61,13 @@ public class ProductServiceTests : IntegrationTestBase
 
         response.Product.ProductId.Should().Be(expectedProduct.Id);
     }
-    
+
     [Fact]
     public async Task UpdatePrice_OfExistingProduct_ShouldReturnOldPrice()
     {
         var client = new ProductService.ProductServiceClient(Channel);
-        
-        var productId = 0;
+
+        var productId = 1;
         var newPrice = 100;
         var expectedOldPrice = 10;
         var updatePriceRequest = new UpdatePriceRequest
@@ -75,13 +75,13 @@ public class ProductServiceTests : IntegrationTestBase
             NewPrice = newPrice,
             ProductId = productId
         };
-        
+
         Fixture.ProductRepositoryFake
             .Setup(fake => fake.UpdatePrice(productId, newPrice))
             .Returns(expectedOldPrice);
 
         var response = await client.UpdatePriceAsync(updatePriceRequest);
-        
+
         response.OldPrice.Should().Be(expectedOldPrice);
     }
 
@@ -89,7 +89,7 @@ public class ProductServiceTests : IntegrationTestBase
     public async Task List_FromRepositoryWithThreeProductsWithCorrespondingFilterAndPagination_ShouldReturnThreeProducts()
     {
         var client = new ProductService.ProductServiceClient(Channel);
-        
+
         var paginationContext = new Pagination
         {
             PageNumber = 0,
@@ -99,10 +99,10 @@ public class ProductServiceTests : IntegrationTestBase
         {
             ProductType = Domain.Models.ProductType.General,
             StartDate = DateTime.MinValue,
-            WarehouseId = 0
+            WarehouseId = 1
         };
-        var expectedPage = new List<Domain.Models.Product> 
-        { 
+        var expectedPage = new List<Domain.Models.Product>
+        {
             new ProductBuilder().WithId(0).WithType(Domain.Models.ProductType.General).Build(),
             new ProductBuilder().WithId(1).WithType(Domain.Models.ProductType.General).Build(),
             new ProductBuilder().WithId(2).WithType(Domain.Models.ProductType.General).Build()
@@ -112,13 +112,13 @@ public class ProductServiceTests : IntegrationTestBase
             Filter = ConvertFilterModelToFilterRequestModel(filter),
             Pagination = ConvertPaginationModelToPaginationRequestModel(paginationContext)
         };
-        
+
         Fixture.ProductRepositoryFake
             .Setup(fake => fake.List(paginationContext, filter))
             .Returns(expectedPage);
-        
+
         var response = await client.ListAsync(listProductsRequest);
-        
+
         response.Products.Should().HaveCount(expectedPage.Count);
     }
 }

@@ -21,14 +21,14 @@ public class ProductServiceTests
     public void Create_NewProductCreation_ShouldReturnProductId()
     {
         var productCreation = new ProductCreationBuilder().Build();
-        var expectedId = 0;
+        var expectedId = 1;
 
         _productRepositoryFake
             .Setup(fake => fake.Create(productCreation))
             .Returns(expectedId);
 
         var actualId = _productService.Create(productCreation);
-        
+
         Assert.Equal(expectedId, actualId);
         _productRepositoryFake.Verify(fake => fake.Create(productCreation), Times.Once);
     }
@@ -36,7 +36,7 @@ public class ProductServiceTests
     [Fact]
     public void Get_ExistingProduct_ShouldReturnProduct()
     {
-        var existingProductId = 0;
+        var existingProductId = 1;
         var expectedProduct = new ProductBuilder().Build();
 
         _productRepositoryFake
@@ -44,7 +44,7 @@ public class ProductServiceTests
             .Returns(expectedProduct);
 
         var actualProduct = _productService.Get(existingProductId);
-        
+
         Assert.Equivalent(expectedProduct, actualProduct);
         _productRepositoryFake.Verify(fake => fake.Get(existingProductId), Times.Once);
     }
@@ -52,16 +52,16 @@ public class ProductServiceTests
     [Fact]
     public void UpdatePrice_OfExistingProduct_ShouldReturnOldPrice()
     {
-        var existingProductId = 0;
+        var existingProductId = 1;
         var newPrice = 100;
         var expectedOldPrice = 10;
-        
+
         _productRepositoryFake
             .Setup(fake => fake.UpdatePrice(existingProductId, newPrice))
             .Returns(expectedOldPrice);
 
         var actualOldPrice = _productService.UpdatePrice(existingProductId, newPrice);
-        
+
         Assert.Equal(expectedOldPrice, actualOldPrice);
         _productRepositoryFake
             .Verify(fake => fake.UpdatePrice(existingProductId, newPrice), Times.Once);
@@ -70,11 +70,11 @@ public class ProductServiceTests
     [Fact]
     public void List_FromRepositoryWithTwoProductsWithCorrespondingFilterAndPagination_ShouldReturnTwoProducts()
     {
-        var productsWarehouseId = 0;
+        var productsWarehouseId = 1;
         var productsType = ProductType.General;
         var firstExpectedProduct =
             new ProductBuilder().WithType(productsType).WithWarehouseId(productsWarehouseId).Build();
-        var secondExpectedProduct = 
+        var secondExpectedProduct =
             new ProductBuilder().WithType(productsType).WithWarehouseId(productsWarehouseId).Build();
         var expectedList = new List<Product> { firstExpectedProduct, secondExpectedProduct };
 
@@ -86,7 +86,7 @@ public class ProductServiceTests
             .RuleFor(faker => faker.ProductType, productsType)
             .RuleFor(faker => faker.WarehouseId, productsWarehouseId)
             .RuleFor(faker => faker.StartDate, DateTime.MinValue);
-        
+
         _productRepositoryFake
             .Setup(fake => fake.List(paginationContext, filter))
             .Returns(expectedList);
