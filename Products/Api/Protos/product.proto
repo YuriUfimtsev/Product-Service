@@ -18,6 +18,7 @@ service ProductService {
   rpc Create (CreateProductRequest) returns (CreateProductResponse) {
     option (google.api.http) = {
       post: "/product/create"
+      body: "*"
     };
   };
 
@@ -35,7 +36,8 @@ service ProductService {
 
   rpc List (ListProductsRequest) returns (ListProductsResponse) {
     option (google.api.http) = {
-      get: "/product/list"
+      post: "/product/list"
+      body: "*"
     };
   };
 }
@@ -98,7 +100,7 @@ message ListProductsRequest {
   message Filter {
     Date start_date = 1;
     ProductType product_type = 2;
-      int32 warehouse_id = 3;
+    int32 warehouse_id = 3;
     }
 }
 

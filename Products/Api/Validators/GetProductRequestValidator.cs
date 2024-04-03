@@ -6,6 +6,6 @@ public class GetProductRequestValidator : AbstractValidator<GetProductRequest>
 {
     public GetProductRequestValidator()
     {
-        RuleFor(request => request.ProductId).GreaterThan(0);
+        RuleFor(request => request.ProductId).GreaterThanOrEqualTo(0);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using DataAccess.Models;
 using Domain;
 using Domain.Exceptions;
 using Domain.Models;

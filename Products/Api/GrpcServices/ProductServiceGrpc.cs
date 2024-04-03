@@ -1,5 +1,4 @@
 using Application;
-using DataAccess.Models;
 using Domain.Models;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
@@ -74,7 +73,7 @@ public class ProductServiceGrpc: Api.ProductService.ProductServiceBase
         
         var products = _productService.List(pagination, filter);
 
-        var apiProtobufProducts = products.Select(product => MapToProtoProduct(product));
+        var apiProtobufProducts = products.Select(MapToProtoProduct);
         var response = new ListProductsResponse();
         response.Products.AddRange(apiProtobufProducts);
         
